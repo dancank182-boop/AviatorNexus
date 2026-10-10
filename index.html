@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08090d">
+<title>AVIATOR NEXUS</title>
+<style>
+:root {
+  --bg:#08090d;
+  --panel:#12141c;
+  --panel2:#191b25;
+  --red:#ff1738;
+  --red2:#bd001d;
+  --text:#f6f7fb;
+  --muted:#9296a7;
+  --green:#29df91;
+  --line:#292c38;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:Arial,Helvetica,sans-serif; min-height:100vh;
+  background-image:radial-gradient(ellipse at 50% 0%,#351018 0%,transparent 48%);
+}
+button,input { font:inherit; }
+button { cursor:pointer; }
+button:focus-visible { outline:2px solid white; outline-offset:3px; }
+.app { max-width:520px; min-height:100vh; margin:auto; padding-bottom:92px; }
+.topbar {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:20px 18px 15px; border-bottom:1px solid #ffffff0d;
+}
+.brand { display:flex; align-items:center; gap:10px; }
+.logo {
+  display:grid; place-items:center; width:43px; height:43px;
+  border-radius:14px; color:white; font-size:25px;
+  background:linear-gradient(145deg,#ff4058,#b90020);
+  box-shadow:0 0 22px #ff173833;
+}
+.brand h1 { font-size:17px; letter-spacing:1.5px; margin:0; }
+.brand small { color:var(--red); letter-spacing:3px; font-weight:bold; }
+.status { font-size:10px; color:var(--green); border:1px solid #29df9144;
+  background:#29df9110; border-radius:20px; padding:7px 9px; }
+.page { display:none; padding:20px 16px; animation:appear .25s ease; }
+.page.active { display:block; }
+@keyframes appear { from { opacity:0; transform:translateY(5px); } to {opacity:1;transform:none;} }
+.eyebrow { font-size:11px; color:var(--red); letter-spacing:2px; font-weight:bold; text-transform:uppercase; }
+h2 { margin:8px 0; font-size:25px; }
+.sub { color:var(--muted); font-size:13px; line-height:1.6; }
+.card {
+  background:linear-gradient(145deg,#171923,#101117);
+  border:1px solid var(--line); border-radius:18px; padding:17px; margin-top:15px;
+  box-shadow:0 10px 30px #0002;
+}
+.hero {
+  overflow:hidden; position:relative; min-height:230px; padding:21px 18px;
+  background:linear-gradient(160deg,#421019 0%,#1c0d15 47%,#0d1018 100%);
+  border:1px solid #ff173844; border-radius:22px;
+}
+.hero:before {
+  content:""; position:absolute; width:240px; height:240px; right:-65px; top:35px;
+  border-radius:50%; border:1px solid #ff17382b;
+  box-shadow:0 0 0 20px #ff173808,0 0 0 40px #ff173805;
+}
+.hero:after {
+  content:""; position:absolute; height:1px; left:0; right:0; bottom:35px;
+  background:linear-gradient(90deg,transparent,#ff1738aa,transparent);
+}
+.hero-copy { position:relative; z-index:2; max-width:70%; }
+.hero h2 { font-size:29px; line-height:1.1; margin:12px 0; }
+.plane-scene { position:absolute; right:10px; bottom:48px; font-size:67px;
+  transform:rotate(-14deg); filter:drop-shadow(0 0 12px #ff1738); animation:fly 3s ease-in-out infinite; }
+@keyframes fly { 0%,100% { transform:translateY(0) rotate(-14deg); } 50% {transform:translateY(-10px) rotate(-9deg);} }
+.btn {
+  border:0; border-radius:13px; padding:14px 16px; font-weight:bold;
+  color:white; background:linear-gradient(100deg,#ff1b3c,#d40027);
+  box-shadow:0 5px 18px #ff173829; width:100%; margin-top:12px;
+}
+.btn:active { transform:scale(.985); }
+.btn.secondary { background:#20232e; box-shadow:none; border:1px solid #343745; }
+.btn.ghost { background:transparent; box-shadow:none; border:1px solid #ff173866; color:#ff6479; }
+.btn.small { width:auto; padding:10px 13px; font-size:12px; margin:0; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; }
+.metric { background:#11141b; border:1px solid var(--line); padding:14px 9px; border-radius:15px; }
+.metric span { display:block; color:var(--muted); font-size:11px; }
+.metric strong { display:block; font-size:23px; margin-top:8px; }
+.metric strong.red { color:var(--red); }
+.metric strong.green { color:var(--green); }
+.section-head { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.section-head h3 { margin:0; font-size:16px; }
+.section-head button { color:var(--red); background:none; border:0; font-size:12px; }
+.notice { color:#ffcf77; background:#ffb52a0d; border:1px solid #ffb52a30;
+  border-radius:12px; padding:12px; font-size:11px; line-height:1.6; margin-top:15px; }
+.display {
+  text-align:center; padding:26px 12px; overflow:hidden; position:relative;
+  background:linear-gradient(180deg,#291019,#11121a 72%);
+}
+.display .plane-big { font-size:65px; display:block; margin:16px auto 8px;
+  filter:drop-shadow(0 0 16px #ff1738); }
+.multiplier { font-size:51px; font-weight:800; letter-spacing:-2px; }
+.multiplier.red { color:#ff2948; text-shadow:0 0 22px #ff17383b; }
+.multiplier.green { color:var(--green); }
+.progress { height:5px; background:#292c38; border-radius:10px; overflow:hidden; margin:20px 0 8px; }
+.progress > div { height:100%; width:0; background:var(--red); transition:width .3s; }
+.pill { display:inline-block; padding:6px 9px; border-radius:30px; font-size:10px;
+  background:#ff173815; color:#ff687e; border:1px solid #ff173833; }
+.rowline { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.rowline + .rowline { margin-top:13px; }
+.muted { color:var(--muted); font-size:12px; }
+.history-item { display:grid; grid-template-columns:1fr 1fr auto; gap:8px; align-items:center;
+  border-bottom:1px solid #ffffff0b; padding:13px 0; font-size:13px; }
+.history-item:last-child { border:0; }
+.history-value { font-weight:bold; color:#ff4a61; }
+.tag { font-size:10px; padding:5px 8px; border-radius:20px; background:#29df9119; color:var(--green); }
+.tag.loss { background:#ff173819; color:#ff6378; }
+.empty { color:var(--muted); font-size:13px; text-align:center; padding:24px 8px; }
+.field { margin-top:15px; }
+.field label { display:block; color:var(--muted); font-size:12px; margin-bottom:8px; }
+.field input {
+  width:100%; background:#0b0d13; border:1px solid #343745; border-radius:11px;
+  padding:13px; color:white; outline:none;
+}
+.field input:focus { border-color:var(--red); }
+.nav {
+  position:fixed; z-index:10; bottom:0; left:50%; transform:translateX(-50%);
+  width:min(520px,100%); display:grid; grid-template-columns:repeat(4,1fr);
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
+  background:#0b0c12f5; border-top:1px solid #ffffff15; backdrop-filter:blur(14px);
+}
+.nav button { color:var(--muted); background:none; border:0; padding:7px 2px; font-size:10px; }
+.nav button span { display:block; font-size:21px; margin-bottom:4px; }
+.nav button.active { color:var(--red); }
+.nav button.active span { filter:drop-shadow(0 0 7px #ff1738); }
+.footer { text-align:center; padding:22px 8px; color:#626676; font-size:10px; line-height:1.8; }
+.small-text { font-size:11px; line-height:1.7; color:var(--muted); }
+@media(min-width:600px) {
+  body { padding:15px 0; }
+  .app { border:1px solid #282b35; border-radius:25px; overflow:hidden; }
+  .nav { bottom:15px; border:1px solid #ffffff18; border-radius:18px; width:min(500px,calc(100% - 30px)); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">✈</div>
+      <div><h1>AVIATOR</h1><small>NEXUS</small></div>
+    </div>
+    <div class="status">● DEMO MODE</div>
+  </header>
+
+  <main>
+    <section class="page active" id="home">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">FLIGHT SYSTEM ONLINE</div>
+          <h2>Welcome,<br>Pilot.</h2>
+          <div class="sub">Your flight. Your demo.<br>Explore the multiplier simulator.</div>
+          <button class="btn small" style="margin-top:17px" data-go="predictor">Launch simulator →</button>
+        </div>
+        <div class="plane-scene">✈</div>
+      </div>
+
+      <div class="grid3" style="margin-top:14px">
+        <div class="metric"><span>DEMO ROUNDS</span><strong id="homeRounds">0</strong></div>
+        <div class="metric"><span>DEMO WINS</span><strong class="green" id="homeWins">0</strong></div>
+        <div class="metric"><span>WIN RATE</span><strong class="red" id="homeRate">0%</strong></div>
+      </div>
+
+      <div class="card">
+        <div class="section-head"><h3>Flight control</h3><span class="pill">SIMULATED</span></div>
+        <p class="sub">Generate a random demo multiplier and record it in your flight history. It has no connection to the real Aviator game.</p>
+        <button class="btn" data-go="predictor">Open demo predictor</button>
+      </div>
+
+      <div class="notice">⚠ DEMO ONLY: Results are randomly simulated. No algorithm in this app can know or guarantee the next real Aviator result.</div>
+      <div class="footer">AVIATOR NEXUS · FLY SMART · PLAY SAFE</div>
+    </section>
+
+    <section class="page" id="predictor">
+      <div class="eyebrow">SIMULATION CONSOLE</div>
+      <h2>Demo Predictor</h2>
+      <p class="sub">Generate an illustrative multiplier for a fictional round.</p>
+
+      <div class="card display">
+        <span class="pill" id="flightStatus">READY FOR TAKEOFF</span>
+        <span class="plane-big" id="bigPlane">✈</span>
+        <div class="multiplier red" id="multiplier">1.00x</div>
+        <div class="sub" id="predictionMessage">Tap below to start a demo round.</div>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="small-text" id="roundLabel">No round generated yet</div>
+      </div>
+      <button class="btn" id="generateBtn">✈ Generate demo result</button>
+      <button class="btn secondary" id="resetDisplayBtn">Reset display</button>
+      <div class="notice">This is random entertainment software, not a real predictor. Do not use demo results to place bets.</div>
+    </section>
+
+    <section class="page" id="history">
+      <div class="eyebrow">FLIGHT LOG</div>
+      <h2>Round history</h2>
+      <p class="sub">Your demo results saved on this device.</p>
+      <div class="card">
+        <div class="section-head"><h3>Recent rounds</h3><button id="clearHistoryBtn">Clear history</button></div>
+        <div id="historyList"><div class="empty">No rounds yet. Try the demo predictor.</div></div>
+      </div>
+    </section>
+
+    <section class="page" id="stats">
+      <div class="eyebrow">FLIGHT ANALYTICS</div>
+      <h2>Your statistics</h2>
+      <p class="sub">A summary of the simulator history on this device.</p>
+      <div class="grid2">
+        <div class="metric"><span>TOTAL ROUNDS</span><strong id="statRounds">0</strong></div>
+        <div class="metric"><span>DEMO WINS</span><strong class="green" id="statWins">0</strong></div>
+        <div class="metric"><span>DEMO LOSSES</span><strong class="red" id="statLosses">0</strong></div>
+        <div class="metric"><span>WIN RATE</span><strong id="statRate">0%</strong></div>
+      </div>
+      <div class="card">
+        <div class="section-head"><h3>Multiplier bands</h3></div>
+        <div id="distribution" class="small-text" style="margin-top:15px">Generate demo rounds to see their distribution.</div>
+      </div>
+      <p class="small-text">These statistics describe only the randomly generated demo data. They do not estimate the next real game's outcome.</p>
+    </section>
+
+    <section class="page" id="settings">
+      <div class="eyebrow">SYSTEM CONFIGURATION</div>
+      <h2>Settings</h2>
+      <p class="sub">Manage this app's local demo history.</p>
+      <div class="card">
+        <div class="rowline"><div><strong>App version</strong><div class="muted">AVIATOR NEXUS 1.0</div></div><span class="pill">READY</span></div>
+        <div class="rowline"><div><strong>Storage</strong><div class="muted">Saved in this browser</div></div><span class="pill">LOCAL</span></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Data management</h3>
+        <p class="sub">Clearing history removes saved demo rounds from this app on this device.</p>
+        <button class="btn ghost" id="settingsClearBtn">Clear all demo history</button>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">About AVIATOR NEXUS</h3>
+        <p class="small-text">A mobile-first, single-file HTML demo project. It does not connect to Aviator, read live game data, or predict real outcomes. All generated multipliers are fictional.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="nav" aria-label="Main navigation">
+    <button class="active" data-page="home"><span>⌂</span>Home</button>
+    <button data-page="predictor"><span>✈</span>Predictor</button>
+    <button data-page="history"><span>◷</span>History</button>
+    <button data-page="stats"><span>▥</span>Stats</button>
+  </nav>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "aviator_nexus_demo_v1";
+  var rounds = [];
+
+  function loadRounds() {
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      rounds = saved ? JSON.parse(saved) : [];
+      if (!Array.isArray(rounds)) rounds = [];
+    } catch (error) {
+      rounds = [];
+    }
+  }
+
+  function saveRounds() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rounds));
+    } catch (error) {
+      alert("Could not save demo history in this browser.");
+    }
+  }
+
+  function byId(id) {
+    return document.getElementById(id);
+  }
+
+  function showPage(id) {
+    var target = byId(id);
+    if (!target) return;
+
+    document.querySelectorAll(".page").forEach(function (page) {
+      page.classList.toggle("active", page.id === id);
+    });
+
+    document.querySelectorAll(".nav [data-page]").forEach(function (button) {
+      button.classList.toggle("active", button.getAttribute("data-page") === id);
+    });
+
+    window.scrollTo(0, 0);
+    renderAll();
+  }
+
+  document.querySelectorAll("[data-page]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      showPage(button.getAttribute("data-page"));
+    });
+  });
+
+  document.querySelectorAll("[data-go]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      showPage(button.getAttribute("data-go"));
+    });
+  });
+
+  function randomMultiplier() {
+    // Fictional demo distribution; not connected to the real game.
+    var r = Math.random();
+    var value;
+
+    if (r < 0.50) {
+      value = 1 + Math.random() * 1.0;
+    } else if (r < 0.78) {
+      value = 2 + Math.random() * 2.0;
+    } else if (r < 0.94) {
+      value = 4 + Math.random() * 6.0;
+    } else {
+      value = 10 + Math.random() * 40.0;
+    }
+
+    return Math.round(value * 100) / 100;
+  }
+
+  function generateRound() {
+    var value = randomMultiplier();
+    var round = {
+      id: Date.now(),
+      value: value,
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      win: value >= 2
+    };
+
+    rounds.unshift(round);
+    if (rounds.length > 100) rounds = rounds.slice(0, 100);
+    saveRounds();
+
+    byId("multiplier").textContent = value.toFixed(2) + "x";
+    byId("multiplier").className = "multiplier " + (value >= 2 ? "green" : "red");
+    byId("flightStatus").textContent = "DEMO ROUND COMPLETE";
+    byId("predictionMessage").textContent = value >= 2
+      ? "Demo result: above 2.00x. This is not a real-game prediction."
+      : "Demo result: below 2.00x. This is not a real-game prediction.";
+    byId("roundLabel").textContent = "Demo round #" + rounds.length + " · " + round.time;
+    byId("progressBar").style.width = Math.min(100, value * 2) + "%";
+    byId("bigPlane").style.transform = "rotate(-12deg) translateY(-5px)";
+    renderAll();
+  }
+
+  function resetDisplay() {
+    byId("multiplier").textContent = "1.00x";
+    byId("multiplier").className = "multiplier red";
+    byId("flightStatus").textContent = "READY FOR TAKEOFF";
+    byId("predictionMessage").textContent = "Tap below to start a demo round.";
+    byId("roundLabel").textContent = "No round generated yet";
+    byId("progressBar").style.width = "0";
+    byId("bigPlane").style.transform = "";
+  }
+
+  function clearHistory() {
+    if (!rounds.length) {
+      alert("There is no demo history to clear.");
+      return;
+    }
+    if (!confirm("Delete all saved demo rounds from this browser?")) return;
+    rounds = [];
+    saveRounds();
+    resetDisplay();
+    renderAll();
+  }
+
+  function renderHistory() {
+    var list = byId("historyList");
+    if (!rounds.length) {
+      list.innerHTML = '<div class="empty">No rounds yet. Try the demo predictor.</div>';
+      return;
+    }
+
+    list.innerHTML = rounds.map(function (round, index) {
+      var safeValue = Number(round.value);
+      if (!Number.isFinite(safeValue)) safeValue = 1;
+      var result = safeValue >= 2;
+      return '<div class="history-item">' +
+        '<div><span class="muted">#' + String(rounds.length - index).padStart(3, "0") +
+        '</span><br><span class="muted">' + escapeHtml(round.time || "") + '</span></div>' +
+        '<div class="history-value">' + safeValue.toFixed(2) + 'x</div>' +
+        '<span class="tag ' + (result ? '' : 'loss') + '">' +
+        (result ? 'DEMO WIN' : 'DEMO LOW') + '</span></div>';
+    }).join("");
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (char) {
+      return {
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#39;"
+      }[char];
+    });
+  }
+
+  function renderStats() {
+    var total = rounds.length;
+    var wins = rounds.filter(function (round) { return Number(round.value) >= 2; }).length;
+    var losses = total - wins;
+    var rate = total ? Math.round(wins / total * 100) : 0;
+
+    byId("homeRounds").textContent = total;
+    byId("homeWins").textContent = wins;
+    byId("homeRate").textContent = rate + "%";
+    byId("statRounds").textContent = total;
+    byId("statWins").textContent = wins;
+    byId("statLosses").textContent = losses;
+    byId("statRate").textContent = rate + "%";
+
+    var bands = [
+      { label: "1.00–1.99x", count: 0 },
+      { label: "2.00–3.99x", count: 0 },
+      { label: "4.00–9.99x", count: 0 },
+      { label: "10.00x+", count: 0 }
+    ];
+
+    rounds.forEach(function (round) {
+      var v = Number(round.value);
+      if (v < 2) bands[0].count++;
+      else if (v < 4) bands[1].count++;
+      else if (v < 10) bands[2].count++;
+      else bands[3].count++;
+    });
+
+    byId("distribution").innerHTML = total ? bands.map(function (band) {
+      var pct = Math.round(band.count / total * 100);
+      return '<div style="margin:12px 0">' +
+        '<div class="rowline"><span>' + band.label + '</span><span>' +
+        band.count + ' · ' + pct + '%</span></div>' +
+        '<div class="progress" style="margin:7px 0 0"><div style="width:' +
+        pct + '%"></div></div></div>';
+    }).join("") : "Generate demo rounds to see their distribution.";
+  }
+
+  function renderAll() {
+    renderHistory();
+    renderStats();
+  }
+
+  byId("generateBtn").addEventListener("click", generateRound);
+  byId("resetDisplayBtn").addEventListener("click", resetDisplay);
+  byId("clearHistoryBtn").addEventListener("click", clearHistory);
+  byId("settingsClearBtn").addEventListener("click", clearHistory);
+
+  loadRounds();
+  renderAll();
+})();
+</script>
+</body>
+  </html>
+  
